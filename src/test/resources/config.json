@@ -1,0 +1,7 @@
+{
+  "basePage": "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login",
+  "pathToFile": "output.csv",
+  "urlForGrid" : "http://192.168.1.45:4444",
+  "chromeVersionForGrid": "96.0.4664.45",
+  "platformNameForGrid" : "Windows"
+}
