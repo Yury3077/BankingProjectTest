@@ -1,7 +1,10 @@
 {
   "basePage": "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login",
-  "pathToFile": "output.csv",
+  "pathToFile": "target/output.csv",
   "urlForGrid" : "http://192.168.1.45:4444",
   "chromeVersionForGrid": "96.0.4664.45",
-  "platformNameForGrid" : "Windows"
+  "platformNameForGrid" : "Windows",
+  "dateTimeInputPattern": "MMM d, yyyy h:mm:ss a",
+  "dateTimeOutputPattern": "dd MM yyyy HH:mm:ss",
+  "useSeleniumGrid": "true"
 }

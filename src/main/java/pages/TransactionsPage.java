@@ -5,7 +5,9 @@ import aquality.selenium.elements.ElementType;
 import aquality.selenium.elements.interfaces.IElement;
 import aquality.selenium.elements.interfaces.ITextBox;
 import aquality.selenium.forms.Form;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import  utils.ParseDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class TransactionsPage extends Form {
                 "Transaction page checking");
     }
 
+    @Step("Getting table with data")
     public List<String> getTableRows () {
         ArrayList<String> dataTable = new ArrayList<>();
         List<ITextBox> allRows = transactionsTable.findChildElements(By.tagName("tr"), ElementType.TEXTBOX);
@@ -30,6 +33,7 @@ public class TransactionsPage extends Form {
         return dataTable;
     }
 
+    @Step("Getting head of table for .csv file")
     public ArrayList<String> getTableHeadForCsv() {
         ArrayList<String> dataTableHead = new ArrayList<>();
         List<ITextBox> namesOfColons = transactionsTableHead.findChildElements(By.tagName("td"), ElementType.TEXTBOX);
@@ -39,6 +43,7 @@ public class TransactionsPage extends Form {
         return dataTableHead;
     }
 
+    @Step("Getting table data for .csv file")
     public ArrayList<String> getTableRowsForCsv () {
         ArrayList<String> dataTable = new ArrayList<>();
         List<ITextBox> allRows = transactionsTable.findChildElements(By.tagName("tr"), ElementType.TEXTBOX);
@@ -46,11 +51,15 @@ public class TransactionsPage extends Form {
             List<ITextBox> separateRow = trElement.findChildElements(By.tagName("td"), ElementType.TEXTBOX);
             ArrayList<String> rowData = new ArrayList<>();
             for (ITextBox tdElement : separateRow)
-                rowData.add(tdElement.getText());
+                if (tdElement.getText().contains("AM") || tdElement.getText().contains("PM")) {
+                    String data = ParseDateTime.parseDateForCsvFile(tdElement.getText());
+                    rowData.add(data);
+                }
+                else {
+                    rowData.add(tdElement.getText());
+                }
             dataTable.add(String.join(",", rowData) + "\n");
         }
         return dataTable;
     }
-
-
 }

@@ -4,6 +4,7 @@ import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ITextBox;
 import aquality.selenium.forms.Form;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class AccountPage extends Form{
@@ -30,34 +31,45 @@ public class AccountPage extends Form{
         super(By.xpath("//*[@id='accountSelect']"), "Account page checking");
     }
 
+    @Step("Click deposit button")
     public void clickDepositButton () {
         depositButton.click();
     }
 
+    @Step("Fill in amount to deposit")
     public void amountToDeposit (int amount) {
         inputBox.clearAndType(String.valueOf(amount));
     }
 
-    public void amountToWithdrawl (int amount) throws InterruptedException {
+    @Step("Fill in amount to withdrawl")
+    public void amountToWithdrawl (int amount) {
+        withdrawlInputBox.state().waitForDisplayed();
         withdrawlInputBox.clearAndType(String.valueOf(amount));
     }
 
-    public void clickSubmitButton () throws InterruptedException {
+    @Step("Click submit button")
+    public void clickSubmitButton () {
+        submitButton.state().waitForDisplayed();
         submitButton.click();
     }
 
+    @Step("Getting text after click deposit")
     public String getTextAfterDeposit(){
+        depositSuccessElement.state().waitForDisplayed();
         return depositSuccessElement.getText();
     }
 
+    @Step("Click withdrawl button")
     public void clickWithdrawlButton () {
         withdrawlButton.click();
     }
 
+    @Step("Click get balance button")
     public String getBalance() {
         return balanceText.getText();
     }
 
+    @Step("Click transactions button")
     public void  clickTransactionsButton() {
         transactionsButton.click();
     }

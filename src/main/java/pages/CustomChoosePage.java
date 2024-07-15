@@ -4,6 +4,7 @@ import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.IComboBox;
 import aquality.selenium.forms.Form;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class CustomChoosePage extends Form  {
@@ -16,11 +17,13 @@ public class CustomChoosePage extends Form  {
         super(By.xpath("//*[@ng-model='custId']"), "Choose customer page checking");
     }
 
+    @Step("Fill in customer name, click element")
     public void chooseCustomer (String customerName) {
         chooseCustomerElem.selectByContainingText(customerName);
         chooseCustomerElem.click();
     }
 
+    @Step("Click on login button")
     public void clickLoginButton () {
         loginButton.click();
     }

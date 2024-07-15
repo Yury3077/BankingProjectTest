@@ -1,3 +1,9 @@
 {
-  "customer_name": "Harry Potter"
+  "customer_name": "Harry Potter",
+  "deposit_text": "Deposit Successful",
+  "withdrawn_text": "Transaction successful",
+  "balance_after_transactions": "0",
+  "deposit_table_text": " Credit",
+  "withdrawn_table_text": " Debit"
+
 }

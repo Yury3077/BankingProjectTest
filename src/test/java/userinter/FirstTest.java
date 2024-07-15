@@ -2,7 +2,6 @@ package userinter;
 
 import config.TestDataConfiguration;
 import config.Configuration;
-import logger.MyLogger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.StartBankPage;
@@ -12,18 +11,9 @@ import pages.TransactionsPage;
 import utils.GetFibonachi;
 import utils.CsvParser;
 
-import java.io.IOException;
-
 public class FirstTest extends BaseTest {
-    private static final String SUCCESS_TEXT = "Deposit Successful";
-    private static final String WITHDRAWN_TEXT = "Transaction successful";
-    private static final String BALANCE_AFTER_TRANSACTIONS = "0";
-    private static final String DEPOSIT_TABLE_TEXT = GetFibonachi.getNumber() + " " + "Credit";
-    private static final String WITHDRAWN_TABLE_TEXT = GetFibonachi.getNumber() + " " + "Debit";
-    private final MyLogger logger = MyLogger.getInstance();
-
-    @Test
-    public void bankServiceTest() throws InterruptedException, IOException {
+    @Test(description = "This test is made for checking transactions in a web page and a csv file")
+    public void bankServiceTest() {
         StartBankPage startBankPage = new StartBankPage();
         startBankPage.state().waitForDisplayed();
         Assert.assertTrue(startBankPage.state().isDisplayed(), "Main page should be opened");
@@ -41,25 +31,24 @@ public class FirstTest extends BaseTest {
         accountPage.clickDepositButton();
         accountPage.amountToDeposit(GetFibonachi.getNumber());
         accountPage.clickSubmitButton();
-        Assert.assertEquals(accountPage.getTextAfterDeposit(), SUCCESS_TEXT,
+        Assert.assertEquals(accountPage.getTextAfterDeposit(), TestDataConfiguration.getDepositText(),
                 "Message have to contain 'Deposit Successful'");
         accountPage.clickWithdrawlButton();
-        Thread.sleep(100);
         accountPage.amountToWithdrawl(GetFibonachi.getNumber());
-        Thread.sleep(100);
         accountPage.clickSubmitButton();
-        Thread.sleep(100);
-        Assert.assertEquals(accountPage.getTextAfterDeposit(), WITHDRAWN_TEXT,
+        Assert.assertEquals(accountPage.getTextAfterDeposit(), TestDataConfiguration.getWithdrawnText(),
                 "Message have to contain 'Deposit Successful'");
-        Assert.assertEquals(accountPage.getBalance(), BALANCE_AFTER_TRANSACTIONS);
+        Assert.assertEquals(accountPage.getBalance(), TestDataConfiguration.getBalanceAfterTransactions());
         accountPage.clickTransactionsButton();
 
         TransactionsPage transactionsPage = new TransactionsPage();
         transactionsPage.state().waitForDisplayed();
         Assert.assertTrue(transactionsPage.state().isDisplayed(), "Transactions page should be opened");
-        Assert.assertTrue(transactionsPage.getTableRows().stream().anyMatch(row -> row.contains(DEPOSIT_TABLE_TEXT)),
+        Assert.assertTrue(transactionsPage.getTableRows().stream().anyMatch(row ->
+                        row.contains(GetFibonachi.getNumber() + TestDataConfiguration.getDepositTableText())),
                 "Table have to contains deposit transaction");
-        Assert.assertTrue(transactionsPage.getTableRows().stream().anyMatch(row -> row.contains(WITHDRAWN_TABLE_TEXT)),
+        Assert.assertTrue(transactionsPage.getTableRows().stream().anyMatch(row ->
+                        row.contains(GetFibonachi.getNumber() + TestDataConfiguration.getWithdrawnTableText())),
                 "Table have to contains withdrawn transaction");
         CsvParser.createCsvFile(transactionsPage.getTableHeadForCsv(), transactionsPage.getTableRowsForCsv(),
                 Configuration.getPathToCsvFile());

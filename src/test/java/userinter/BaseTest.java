@@ -15,30 +15,28 @@ import java.net.URL;
 public abstract class BaseTest {
     private Browser browser;
     private WebDriver driver;
-//
-//    @BeforeMethod
-//    public void beforeTest() throws MalformedURLException {
-//        ChromeOptions chromeOptions = new ChromeOptions();
-//        chromeOptions.setCapability("browserVersion", Configuration.getChromeVersionForGrid());
-//        chromeOptions.setCapability("platformName", Configuration.getPlatformNameForGrid());
-//        driver = new RemoteWebDriver(new URL(Configuration.getUrlForGrid()), chromeOptions);
-//        driver.manage().window().maximize();
-//        driver.get(Configuration.getUrl());
-//    }
-//
-//    @AfterMethod
-//    public void afterTest() {
-//        if (driver != null) {
-//            driver.quit();
-//        }
-//    }
 
     @BeforeMethod
     public void beforeTest() {
-        browser = AqualityServices.getBrowser();
-        browser.maximize();
-        browser.goTo(Configuration.getUrl());
-        browser.waitForPageToLoad();
+        if (Configuration.useSeleniumGrid()) {
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.setCapability("browserVersion", Configuration.getChromeVersionForGrid());
+            chromeOptions.setCapability("platformName", Configuration.getPlatformNameForGrid());
+            try {
+                driver = new RemoteWebDriver(new URL(Configuration.getUrlForGrid()), chromeOptions);
+            }
+            catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+            driver.manage().window().maximize();
+            driver.get(Configuration.getUrl());
+        }
+        else {
+            browser = AqualityServices.getBrowser();
+            browser.maximize();
+            browser.goTo(Configuration.getUrl());
+            browser.waitForPageToLoad();
+        }
     }
 
     @AfterMethod
